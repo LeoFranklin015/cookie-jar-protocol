@@ -3,7 +3,7 @@ import { frames } from "../frames";
 import { getProfileData } from "@/lib/getProfileData";
 import { verifyOffchainAttestation } from "@/lib/verifyAttestation";
 import { publicClient } from "@/utils/Client";
-import { BASE_SEPOLIA_cookieJarAddress, cookieJarAbi } from "@/utils/const";
+import { cookieJarContractAddress, cookieJarAbi } from "@/utils/const";
 
 const handleRequest = frames(async (ctx) => {
   const hash = ctx.message?.inputText;
@@ -30,7 +30,9 @@ const handleRequest = frames(async (ctx) => {
   );
 
   const jarData: any = await publicClient.readContract({
-    address: BASE_SEPOLIA_cookieJarAddress,
+    address: cookieJarContractAddress(
+      parseInt(ctx.searchParams["SourcechainId"])
+    ),
     abi: cookieJarAbi,
     functionName: "jarIdToCookieJar",
     args: [ctx.searchParams["jarId"]],
