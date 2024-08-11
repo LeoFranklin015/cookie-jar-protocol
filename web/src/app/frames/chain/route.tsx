@@ -34,19 +34,19 @@ const handleRequest = frames(async (ctx) => {
     buttons: [
       <Button
         action="post"
-        target={`/note?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${ctx.searchParams["amount"]}&chain=op`}
+        target={`/note?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${ctx.searchParams["amount"]}&chain=11155420`}
       >
         Optimism
       </Button>,
       <Button
         action="post"
-        target={`/note?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${ctx.searchParams["amount"]}&chain=base`}
+        target={`/note?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${ctx.searchParams["amount"]}&chain=84532`}
       >
         Base
       </Button>,
       <Button
         action="post"
-        target={`/note?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${ctx.searchParams["amount"]}&chain=celo`}
+        target={`/note?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${ctx.searchParams["amount"]}&chain=44787`}
       >
         Celo
       </Button>,

@@ -6,10 +6,10 @@ import { publicClient } from "@/utils/Client";
 import { cookieJarContractAddress, cookieJarAbi } from "@/utils/const";
 
 const handleRequest = frames(async (ctx) => {
-  const hash = ctx.message?.inputText;
-  const res = {
-    hash: hash,
-  };
+  // const hash = ctx.message?.inputText;
+  // const res = {
+  //   hash: hash,
+  // };
 
   // const response = await fetch("http://localhost:3000/api/get-data-from-ipfs", {
   //   method: "POST",
@@ -44,7 +44,7 @@ const handleRequest = frames(async (ctx) => {
   const userPercentage = 0.4; // Get this from governer contract
   const possibleWithdraw = total * userPercentage;
 
-  console.log(JSON.stringify(ctx.message?.inputText, null, 2));
+  // console.log(JSON.stringify(ctx.message?.inputText, null, 2));
   if (true) {
     return {
       image: (
