@@ -15,7 +15,7 @@ export default function Notes({ allNotes }: NotesProps) {
     <div>
       <div>
         <h1
-          className="text-white text-4xl font-bold text-center"
+          className="text-white text-4xl font-bold text-center mb-5"
         >
           cookiejar/compound-dao
         </h1>
