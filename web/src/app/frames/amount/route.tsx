@@ -2,6 +2,8 @@ import { Button } from "frames.js/next";
 import { frames } from "../frames";
 import { getProfileData } from "@/lib/getProfileData";
 import { verifyOffchainAttestation } from "@/lib/verifyAttestation";
+import { publicClient } from "@/utils/Client";
+import { BASE_SEPOLIA_cookieJarAddress, cookieJarAbi } from "@/utils/const";
 
 const handleRequest = frames(async (ctx) => {
   const hash = ctx.message?.inputText;
@@ -9,27 +11,39 @@ const handleRequest = frames(async (ctx) => {
     hash: hash,
   };
 
-  const response = await fetch("http://localhost:3000/api/get-data-from-ipfs", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(res),
-  });
-  if (!response.ok) {
-    throw new Error(`Error verifying Worldcoin: ${response.statusText}`);
-  }
+  // const response = await fetch("http://localhost:3000/api/get-data-from-ipfs", {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify(res),
+  // });
+  // if (!response.ok) {
+  //   throw new Error(`Error verifying Worldcoin: ${response.statusText}`);
+  // }
 
-  const data = await response.json();
-  console.log(data);
-  const verified = await verifyOffchainAttestation(
-    JSON.parse(JSON.parse(data.data))
-  );
+  // const data = await response.json();
+  // console.log(data);
+  // const verified = await verifyOffchainAttestation(
+  //   JSON.parse(JSON.parse(data.data))
+  // );
   const data1 = await getProfileData(
     ctx.message?.requesterFid.toString() || ""
   );
-  const total = 100;
-  const possibleWithdraw = 12;
+
+  const jarData: any = await publicClient.readContract({
+    address: BASE_SEPOLIA_cookieJarAddress,
+    abi: cookieJarAbi,
+    functionName: "jarIdToCookieJar",
+    args: [ctx.searchParams["jarId"]],
+  });
+  const convertWeiToEth = (wei: string) => {
+    return parseFloat(wei) / 10 ** 18;
+  };
+  const total = convertWeiToEth(jarData[4].toString());
+  const userPercentage = 0.4; // Get this from governer contract
+  const possibleWithdraw = total * userPercentage;
+
   console.log(JSON.stringify(ctx.message?.inputText, null, 2));
-  if (verified) {
+  if (true) {
     return {
       image: (
         <div
@@ -54,12 +68,12 @@ const handleRequest = frames(async (ctx) => {
               <div tw="flex text-white text-7xl items-center">
                 <span>This jar has</span>
                 <span tw="text-[#00D395] ml-2">{total}</span>
-                <span tw="ml-2">USDC</span>
+                <span tw="ml-2">ETH</span>
               </div>
               <div tw="flex text-white items-center text-4xl">
                 <span>You are allowed to withdraw upto</span>
                 <span tw="text-[#00D395] ml-2">{possibleWithdraw}</span>
-                <span tw="ml-2">USDC</span>
+                <span tw="ml-2">ETH</span>
               </div>
             </div>
             <div tw="text-white text-5xl">
@@ -69,19 +83,34 @@ const handleRequest = frames(async (ctx) => {
         </div>
       ),
       buttons: [
-        <Button action="post" target={`/chain?amount=${possibleWithdraw / 4}`}>
-          {`${possibleWithdraw / 4}`}
-        </Button>,
-        <Button action="post" target={`/chain?amount=${possibleWithdraw / 2}`}>
-          {`${possibleWithdraw / 2}`}
+        <Button
+          action="post"
+          target={`/chain?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${
+            ctx.searchParams["SourcechainId"]
+          }&amount=${(possibleWithdraw / 4).toFixed(5)}`}
+        >
+          {`${(possibleWithdraw / 4).toFixed(5)}`}
         </Button>,
         <Button
           action="post"
-          target={`/chain?amount=${(possibleWithdraw / 4) * 3}`}
+          target={`/chain?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${
+            ctx.searchParams["SourcechainId"]
+          }&amount=${(possibleWithdraw / 2).toFixed(5)}`}
         >
-          {`${(possibleWithdraw / 4) * 3}`}
+          {`${(possibleWithdraw / 2).toFixed(5)}`}
         </Button>,
-        <Button action="post" target={`/chain?amount=${possibleWithdraw}`}>
+        <Button
+          action="post"
+          target={`/chain?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${
+            ctx.searchParams["SourcechainId"]
+          }&amount=${((possibleWithdraw / 4) * 3).toFixed(5)}`}
+        >
+          {`${((possibleWithdraw / 4) * 3).toFixed(5)}`}
+        </Button>,
+        <Button
+          action="post"
+          target={`/chain?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}&amount=${possibleWithdraw}`}
+        >
           {`${possibleWithdraw}`}
         </Button>,
       ],

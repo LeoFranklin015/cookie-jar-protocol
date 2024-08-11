@@ -45,7 +45,10 @@ const handleRequest = frames(async (ctx) => {
       <Button action="link" target="http://localhost:3000/worldcoin">
         Get your proof here
       </Button>,
-      <Button action="post" target="/amount">
+      <Button
+        action="post"
+        target={`/amount?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}`}
+      >
         Verify with worldcoin
       </Button>,
     ],

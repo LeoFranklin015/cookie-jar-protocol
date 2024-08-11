@@ -30,7 +30,7 @@ const handleRequest = frames(async (ctx) => {
     buttons: [
       <Button
         action="post"
-        target={`/profile?jarId=${ctx.searchParams["jarId"]}`}
+        target={`/profile?jarId=${ctx.searchParams["jarId"]}&SourcechainId=${ctx.searchParams["SourcechainId"]}`}
       >
         Get Started
       </Button>,
