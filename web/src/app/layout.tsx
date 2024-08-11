@@ -32,7 +32,7 @@ export default function RootLayout({
                 <Link className="mr-4" href={"/create-jar"}>
                   /create-jar
                 </Link>
-                <Link href={"/notes"}>/notes</Link>
+                <Link href={"/notes?chainId=84532"}>/notes</Link>
               </div>
               <div className="flex justify-center items-center mr-5">
                 <ConnectButton />

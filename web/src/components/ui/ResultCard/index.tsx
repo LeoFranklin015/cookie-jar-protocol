@@ -30,7 +30,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   return (
     <div className={styles.card}>
       <p className={styles.description}>{description}</p>
-      <div className="text-2xl font-bold mb-2">{amount} USDC</div>
+      <div className="text-2xl font-bold mb-2">{amount != "0" ? parseInt(amount) / 100 : 5} USDC</div>
       <div className={styles.actions}>
         <button className={styles.upvote} onClick={handleUpvote}>
           <span className={styles.icon}>🟢</span> Upvote ({upvotes})

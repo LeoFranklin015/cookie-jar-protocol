@@ -43,6 +43,8 @@ const CreateJarComponent = ({ contractAddress, contractAbi }: Props) => {
 
         let response = await axios.post(goldsky, { query });
         console.log('response from jar creation', response.data);
+
+        alert('https://optimism-sepolia.blockscout.com/tx/' + response.data.data.jarCreateds[0]?.transactionHash_);
         let jarId = response.data.data.jarCreateds[0]?.jarId || "0xde991ad4fec493c8213aba5fd6da8659e31925c5431efcba4d7e63c816d6a31e";
         // return `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/frames?jarId=${jarId}&chainId=${chainId}`;
         return `https://cookie-jar-protocol.vercel.app/frames?jarId=${jarId}&chainId=${chainId}`;
